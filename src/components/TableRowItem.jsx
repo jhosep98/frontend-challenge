@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   TableCell,
@@ -6,10 +7,10 @@ import {
   withStyles,
   makeStyles,
 } from '@material-ui/core';
+import { blue } from '@material-ui/core/colors';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { blue } from '@material-ui/core/colors';
 
 const ColorButtonEdit = withStyles((theme) => ({
   root: {
@@ -36,8 +37,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TableRowItem = ({ title }) => {
+export const TableRowItem = ({ title, postId }) => {
+  const history = useHistory();
+
+  const handleDetails = (id) => {
+    history.push(`/${id}`);
+  };
+
   const classes = useStyles();
+
   return (
     <TableRow>
       <TableCell className={classes.tableCell}>{title}</TableCell>
@@ -47,6 +55,7 @@ export const TableRowItem = ({ title }) => {
           color="primary"
           className={classes.button}
           startIcon={<VisibilityIcon />}
+          onClick={() => handleDetails(postId)}
         >
           View
         </Button>

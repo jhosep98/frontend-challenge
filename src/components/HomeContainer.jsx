@@ -14,7 +14,6 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
-
 import { useFetch } from '../hooks/useFetch';
 import { TableRowItem } from './TableRowItem.jsx';
 
@@ -63,7 +62,11 @@ export const HomeContainer = () => {
             </TableHead>
             <TableBody>
               {posts.map((post) => (
-                <TableRowItem key={post.id} title={post.title} />
+                <TableRowItem
+                  key={post.id}
+                  title={post.title}
+                  postId={post.id}
+                />
               ))}
             </TableBody>
           </Table>
