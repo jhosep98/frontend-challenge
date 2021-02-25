@@ -9,6 +9,7 @@ import { PostsContextProvider } from './context/PostsContext';
 import { NavBar } from './components/NavBar.jsx';
 import { Home } from './routes/Home.jsx';
 import { DetailPage } from './routes/DetailPage.jsx';
+import { UpdatePage } from './routes/UpdatePage.jsx';
 
 const App = () => (
   <PostsContextProvider>
@@ -20,6 +21,7 @@ const App = () => (
           <Container>
             <Route exact path="/" component={Home} />
             <Route exact path="/:id" component={DetailPage} />
+            <Route exact path="/update/:id" component={UpdatePage} />
           </Container>
         </Switch>
       </Router>

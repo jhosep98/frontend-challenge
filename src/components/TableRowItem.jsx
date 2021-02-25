@@ -44,6 +44,10 @@ export const TableRowItem = ({ title, postId }) => {
     history.push(`/${id}`);
   };
 
+  const handleEdit = (id) => {
+    history.push(`/update/${id}`);
+  };
+
   const classes = useStyles();
 
   return (
@@ -63,6 +67,7 @@ export const TableRowItem = ({ title, postId }) => {
           variant="contained"
           className={classes.button}
           startIcon={<EditIcon />}
+          onClick={() => handleEdit(postId)}
         >
           Edit
         </ColorButtonEdit>

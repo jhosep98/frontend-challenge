@@ -29,7 +29,7 @@ export const DetailsPost = () => {
 
   const fetchData = async () => {
     const response = await PostFinder.get(`/${id}`);
-    console.log(response.data);
+
     setUserId(response.data.userId);
     setTitle(response.data.title);
     setBody(response.data.body);
