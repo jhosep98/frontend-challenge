@@ -11,6 +11,7 @@ import { blue } from '@material-ui/core/colors';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PostFinder from '../api/PostFinder';
 
 const ColorButtonEdit = withStyles((theme) => ({
   root: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TableRowItem = ({ title, postId }) => {
+export const TableRowItem = ({ title, postId, setPosts, posts }) => {
   const history = useHistory();
 
   const handleDetails = (id) => {
@@ -46,6 +47,11 @@ export const TableRowItem = ({ title, postId }) => {
 
   const handleEdit = (id) => {
     history.push(`/update/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    await PostFinder.delete(`${id}`);
+    return setPosts(posts.filter((post) => post.id !== id));
   };
 
   const classes = useStyles();
@@ -76,6 +82,7 @@ export const TableRowItem = ({ title, postId }) => {
           color="secondary"
           className={classes.button}
           startIcon={<DeleteIcon />}
+          onClick={() => handleDelete(postId)}
         >
           Delete
         </Button>

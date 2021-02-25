@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Button,
   makeStyles,
@@ -14,8 +14,9 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
-import { useFetch } from '../hooks/useFetch';
 import { TableRowItem } from './TableRowItem.jsx';
+import { PostsContext } from '../context/PostsContext';
+import PostFinder from '../api/PostFinder';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,10 +35,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const HomeContainer = () => {
+  const isMounted = useRef(true);
+  const [loading, setLoading] = useState(true);
+  const { posts, setPosts } = useContext(PostsContext);
+
   const classes = useStyles();
-  const url = 'https://jsonplaceholder.typicode.com/posts';
-  const { loading, data } = useFetch(url);
-  const posts = !!data && data;
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const response = await PostFinder.get('/');
+        if (isMounted.current) {
+          setLoading(false);
+          setPosts(response.data);
+          console.log(loading);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [setPosts]);
 
   return (
     <Paper className={classes.tableContainer}>
@@ -66,6 +91,8 @@ export const HomeContainer = () => {
                   key={post.id}
                   title={post.title}
                   postId={post.id}
+                  setPosts={setPosts}
+                  posts={posts}
                 />
               ))}
             </TableBody>
