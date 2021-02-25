@@ -11,13 +11,12 @@ import {
   TableRow,
   Toolbar,
   Typography,
-  withStyles,
 } from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import { blue } from '@material-ui/core/colors';
+import Alert from '@material-ui/lab/Alert';
+
+import { useFetch } from '../hooks/useFetch';
+import { TableRowItem } from './TableRowItem.jsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,29 +29,17 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     marginTop: '3rem',
   },
-  button: {
-    margin: theme.spacing(1),
-  },
-  tableCell: {
-    width: '60%',
-  },
   title: {
     flexGrow: 1,
   },
 }));
 
-const ColorButtonEdit = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: blue[500],
-    '&:hover': {
-      backgroundColor: blue[700],
-    },
-  },
-}))(Button);
-
 export const HomeContainer = () => {
   const classes = useStyles();
+  const url = 'https://jsonplaceholder.typicode.com/posts';
+  const { loading, data } = useFetch(url);
+  const posts = !!data && data;
+
   return (
     <Paper className={classes.tableContainer}>
       <Toolbar className={classes.root}>
@@ -63,52 +50,25 @@ export const HomeContainer = () => {
           Add new post
         </Button>
       </Toolbar>
-      <TableContainer>
-        <Table aria-label="posts table" className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell className={classes.tableCell}>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit
-                adipisci architecto repellat doloribus culpa harum, esse
-                commodi! Ut modi voluptatum obcaecati fugiat repellat
-                consectetur placeat officiis, at necessitatibus doloribus
-                reprehenderit!
-              </TableCell>
-              <TableCell align="right">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  startIcon={<VisibilityIcon />}
-                >
-                  View
-                </Button>
-                <ColorButtonEdit
-                  variant="contained"
-                  className={classes.button}
-                  startIcon={<EditIcon />}
-                >
-                  Edit
-                </ColorButtonEdit>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  className={classes.button}
-                  startIcon={<DeleteIcon />}
-                >
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {loading ? (
+        <Alert severity="info">Loading ...</Alert>
+      ) : (
+        <TableContainer>
+          <Table aria-label="posts table" className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {posts.map((post) => (
+                <TableRowItem key={post.id} title={post.title} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Paper>
   );
 };
