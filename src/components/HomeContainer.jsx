@@ -17,6 +17,7 @@ import Alert from '@material-ui/lab/Alert';
 import { TableRowItem } from './TableRowItem.jsx';
 import { PostsContext } from '../context/PostsContext';
 import PostFinder from '../api/PostFinder';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +56,6 @@ export const HomeContainer = () => {
         if (isMounted.current) {
           setLoading(false);
           setPosts(response.data);
-          console.log(loading);
         }
       } catch (error) {
         console.log(error);
@@ -70,7 +70,15 @@ export const HomeContainer = () => {
         <Typography variant="h5" className={classes.title}>
           Posts
         </Typography>
-        <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          component={NavLink}
+          exact
+          to="/create/newPost"
+        >
           Add new post
         </Button>
       </Toolbar>

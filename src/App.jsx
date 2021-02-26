@@ -10,6 +10,7 @@ import { NavBar } from './components/NavBar.jsx';
 import { Home } from './routes/Home.jsx';
 import { DetailPage } from './routes/DetailPage.jsx';
 import { UpdatePage } from './routes/UpdatePage.jsx';
+import { CreatePage } from './routes/CreatePage.jsx';
 
 const App = () => (
   <PostsContextProvider>
@@ -22,6 +23,7 @@ const App = () => (
             <Route exact path="/" component={Home} />
             <Route exact path="/:id" component={DetailPage} />
             <Route exact path="/update/:id" component={UpdatePage} />
+            <Route exact path="/create/newPost" component={CreatePage} />
           </Container>
         </Switch>
       </Router>
